@@ -1,0 +1,39 @@
+spring:
+  thymeleaf:
+    prefix: classpath:/static/
+    suffix: .html
+    encoding: UTF-8
+    mode: LEGACYHTML5
+    cache: false
+  data:
+    mongodb:
+      database: studycatalog
+  datasource: 
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/OHDSI?currentSchema:webapi
+    username: ohdsi_admin_user
+    password: admin1
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      use-new-id-generator-mappings: false
+    properties:
+      hibernate:
+        default_schema: webapi
+        ddl-auto : validate
+server:
+  port: 9996
+shiro:
+  cas: https://localhost:8443/cas
+  server: http://localhost:9996
+  loginUrl: /login.html
+  userNativeSessionManager: true
+  sessionManager:
+    sessionIdUrlRewritingEnabled: false
+  rememberMeManager:
+    cookie:
+      name: "rememberMe"
+studycatalog:
+  security:
+    enabled: true
