@@ -29,8 +29,8 @@ public class StudyController {
     }
 
     @GetMapping("/users")
-    public List<User> getUsers(){
-        return this.userService.getUsers();
+    public List<User> getUsers(Pac4jPrincipal principal){
+        return this.userService.getAllUsersButCurrent(Integer.parseInt(principal.getProfile().getAuthenticationAttribute("id", String.class)));
     }
 
     @GetMapping("/user")

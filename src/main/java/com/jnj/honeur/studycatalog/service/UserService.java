@@ -11,6 +11,6 @@ import java.util.List;
 public interface UserService {
 
     public void createStudy(Study study);
-    public List<User> getUsers();
+    public List<User> getAllUsersButCurrent(int id);
     public User getUser(int id);
 }

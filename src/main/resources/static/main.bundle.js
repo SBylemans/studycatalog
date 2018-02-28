@@ -62,7 +62,7 @@ var AppRoutingModule = /** @class */ (function () {
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "\n<nav class=\"navbar navbar-default navbar-fixed-top\">\n  <div class=\"container-fluid\">\n    <div class=\"navbar-header\">\n      <div class=\"navbar-brand\">\n        <img src=\"/assets/img/HONEUR_logo.png\" width=\"200\"/> {{title}}\n      </div>\n    </div>\n    <ul class=\"nav navbar-nav mr-xl-auto\" routerLinkActive=\"active\">\n      <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"studycatalog-add\">Add Study</a></li>\n    </ul>\n  </div>\n</nav>\n\n<router-outlet></router-outlet>\n\n<p> </p>\n\n<!-- Footer -->\n<footer class=\"py-5\">\n  <div class=\"container\">\n    <p class=\"text-center\">Copyright &copy; HONEUR 2018</p>\n  </div>\n</footer>\n"
+module.exports = "\n<nav class=\"navbar navbar-default navbar-fixed-top\">\n  <div class=\"container-fluid\">\n    <div class=\"navbar-header\">\n      <div class=\"navbar-brand\">\n        <img src=\"/assets/img/HONEUR_logo.png\" width=\"200\"/> {{title}}\n      </div>\n    </div>\n    <ul class=\"nav navbar-nav mr-xl-auto\" routerLinkActive=\"active\">\n      <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/studycatalog\">Home</a></li>\n      <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/studycatalog/add\">Add Study</a></li>\n    </ul>\n  </div>\n</nav>\n\n<router-outlet></router-outlet>\n\n<p> </p>\n\n<!-- Footer -->\n<footer class=\"py-5\">\n  <div class=\"container\">\n    <p class=\"text-center\">Copyright &copy; HONEUR 2018</p>\n  </div>\n</footer>\n"
 
 /***/ }),
 
@@ -90,23 +90,36 @@ module.exports = module.exports.toString();
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__authorization_service__ = __webpack_require__("../../../../../src/app/authorization.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
 
 var AppComponent = /** @class */ (function () {
-    function AppComponent() {
+    function AppComponent(authorizationService) {
+        this.authorizationService = authorizationService;
         this.title = 'Studycatalog';
     }
+    AppComponent.prototype.ngOnInit = function () {
+        this.authorizationService.getUser().subscribe(function (user) {
+            this.user = new user;
+            this.authorizationService.user.emit(user);
+        }.bind(this));
+    };
     AppComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-root',
             template: __webpack_require__("../../../../../src/app/app.component.html"),
             styles: [__webpack_require__("../../../../../src/app/app.component.less")]
-        })
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__authorization_service__["a" /* AuthorizationService */]])
     ], AppComponent);
     return AppComponent;
 }());
@@ -129,12 +142,14 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__study_service__ = __webpack_require__("../../../../../src/app/study.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__authorization_service__ = __webpack_require__("../../../../../src/app/authorization.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -161,12 +176,54 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_7__angular_forms__["a" /* FormsModule */]
             ],
             providers: [
-                __WEBPACK_IMPORTED_MODULE_8__study_service__["a" /* StudyService */]
+                __WEBPACK_IMPORTED_MODULE_8__study_service__["a" /* StudyService */],
+                __WEBPACK_IMPORTED_MODULE_9__authorization_service__["a" /* AuthorizationService */]
             ],
             bootstrap: [__WEBPACK_IMPORTED_MODULE_2__app_component__["a" /* AppComponent */]]
         })
     ], AppModule);
     return AppModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/authorization.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthorizationService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var AuthorizationService = /** @class */ (function () {
+    function AuthorizationService(http) {
+        this.http = http;
+        this.user = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* EventEmitter */]();
+    }
+    AuthorizationService.prototype.getUser = function () {
+        return this.http.get('http://localhost:9996/api/user');
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["P" /* Output */])(),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* EventEmitter */])
+    ], AuthorizationService.prototype, "user", void 0);
+    AuthorizationService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]])
+    ], AuthorizationService);
+    return AuthorizationService;
 }());
 
 
@@ -226,7 +283,7 @@ var StudyService = /** @class */ (function () {
 /***/ "../../../../../src/app/studycatalog-add/studycatalog-add.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\n  <form #studyForm=\"ngForm\" (ngSubmit)=\"save()\">\n    <div class=\"form-group\">\n      <label>Name</label>\n      <input [(ngModel)]=\"study.name\" name=\"name\" type=\"text\" required #name=\"ngModel\"/>\n      <span [hidden]=\"name.valid || !submitted\" class=\"error\">\n        Name is required\n      </span>\n    </div>\n    <div class=\"form-group\">\n      <label>Reference</label>\n      <input [(ngModel)]=\"study.reference\" name=\"reference\" type=\"text\" required #reference=\"ngModel\"/>\n      <span [hidden]=\"reference.valid || !submitted\" class=\"error\">\n        A reference is required\n      </span>\n    </div>\n    <div class=\"form-group\">\n      <label>Description</label>\n      <input [(ngModel)]=\"study.description\" name=\"description\" type=\"text\" required #description=\"ngModel\"/>\n      <span [hidden]=\"description.valid || !submitted\" class=\"error\">\n        A description is required\n      </span>\n    </div>\n    <div class=\"form-group\" *ngIf=\"study.initiator\">\n      <label>Initiator</label>\n      <div class=\"form-group\">\n        <label>Name</label>\n        <input [(ngModel)]=\"study.initiator.name\" name=\"initiatorName\" type=\"text\" required #initiatorName=\"ngModel\" />\n      </div>\n      <div *ngFor=\"let ud of study.initiator.userDetails\">\n        <div class=\"form-group\">\n          <label>{{ud.key}}</label>\n          <input [(ngModel)]=\"ud.value\" name=\"{{ud.value}}\" type=\"text\" required />\n        </div>\n      </div>\n      <!--<div class=\"form-group\">-->\n        <!--<label>Email</label>-->\n        <!--<input [ngModel]=\"study?.initiator?.email\" (ngModelChange)=\"study.initiator.email\" name=\"initiatorEmail\" type=\"email\" required #initiatorEmail=\"ngModel\" />-->\n      <!--</div>-->\n      <!--<div class=\"form-group\">-->\n        <!--<label>Phone</label>-->\n        <!--<input [ngModel]=\"study?.initiator?.phone\" (ngModelChange)=\"study.initiator.phone\" name=\"initiatorPhone\" type=\"tel\" required #initiatorPhone=\"ngModel\" />-->\n      <!--</div>-->\n    </div>\n    <div class=\"form-group\">\n      <label>Collaborators</label>\n\n      <div *ngFor=\"let u of users\">\n        <label>{{u.name}}</label>\n        <input type=\"checkbox\" (change)=\"updateCheckedCollaborators(u, $event)\" name=\"collaborators\">\n      </div>\n\n      <!--<input [ngModel]=\"study?.description\" (ngModelChange)=\"study.description\" name=\"description\" type=\"text\" required #description=\"ngModel\"/>-->\n      <!--<span [hidden]=\"description.valid || !description.touched\" class=\"error\">-->\n      <!--A description is required-->\n      <!--</span>-->\n    </div>\n    <div class=\"form-group\">\n      <label>Acknowledgements</label>\n      <input [(ngModel)]=\"study.acknowledgements\" name=\"acknowledgements\" type=\"text\" required #acknowledgements=\"ngModel\" />\n    </div>\n    <div class=\"form-group\">\n      <button type=\"submit\" class=\"btn btn-primary\">Save</button>\n      <button class=\"btn\" (click)=\"cancel()\">Cancel</button>\n    </div>\n  </form>\n</div>\n"
+module.exports = "<div class=\"container-fluid\">\n  <form #studyForm=\"ngForm\" (ngSubmit)=\"save()\">\n    <div class=\"form-group row\">\n      <label class=\"col-md-2 col-form-label\">Name</label>\n      <div class=\"col-md-10\">\n        <input [(ngModel)]=\"study.name\" name=\"name\" type=\"text\" required #name=\"ngModel\"/>\n        <span [hidden]=\"name.valid || !submitted\" class=\"error\">\n        Name is required\n      </span>\n      </div>\n    </div>\n    <div class=\"form-group row\">\n      <label class=\"col-md-2 col-form-label\">Reference</label>\n      <div class=\"col-md-10\">\n        <input [(ngModel)]=\"study.reference\" name=\"reference\" type=\"text\" required #reference=\"ngModel\"/>\n        <span [hidden]=\"reference.valid || !submitted\" class=\"error\">\n        A reference is required\n      </span>\n      </div>\n    </div>\n    <div class=\"form-group row\">\n      <label class=\"col-md-2 col-form-label\">Description</label>\n      <div class=\"col-md-10\">\n        <input [(ngModel)]=\"study.description\" name=\"description\" type=\"text\" required #description=\"ngModel\"/>\n        <span [hidden]=\"description.valid || !submitted\" class=\"error\">\n        A description is required\n      </span>\n      </div>\n    </div>\n    <div class=\"form-group row\" *ngIf=\"study.initiator\">\n      <label class=\"col-md-2 col-form-label\">Initiator</label>\n      <div class=\"form-group col-md-10 row\">\n        <label class=\"col-md-2 col-form-label\">Name</label>\n\n        <div class=\"col-md-10\">\n          <input [(ngModel)]=\"study.initiator.name\" name=\"initiatorName\" type=\"text\" required #initiatorName=\"ngModel\" />\n        </div>\n      </div>\n      <div *ngFor=\"let ud of study.initiator.userDetails\" class=\"form-group offset-2 col-md-10 row\">\n        <label class=\"col-md-2 col-form-label\">{{ud.key}}</label>\n\n        <div class=\"col-md-10\">\n          <input [(ngModel)]=\"ud.value\" name=\"{{ud.value}}\" type=\"text\" required />\n        </div>\n      </div>\n    </div>\n    <div class=\"form-group row\">\n      <label class=\"col-md-2 col-form-label\">Collaborators</label>\n\n      <div *ngFor=\"let u of users\">\n        <label class=\"col-md-2 col-form-label\">\n          <input class=\"form-check-input\" type=\"checkbox\" (change)=\"updateCheckedCollaborators(u, $event)\" name=\"collaborators\">{{u.name}}\n        </label>\n      </div>\n    </div>\n    <div class=\"form-group row\">\n      <label class=\"col-md-2 col-form-label\">Acknowledgements</label>\n\n      <div class=\"col-md-10\">\n        <input [(ngModel)]=\"study.acknowledgements\" name=\"acknowledgements\" type=\"text\" required #acknowledgements=\"ngModel\" />\n      </div>\n    </div>\n    <div class=\"form-group row\">\n      <button type=\"submit\" class=\"btn btn-primary\">Save</button>\n      <button class=\"btn\" (click)=\"cancel()\">Cancel</button>\n    </div>\n  </form>\n</div>\n"
 
 /***/ }),
 
@@ -335,7 +392,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".menu {\n  border: 2px solid #000095;\n  border-radius: 25px;\n  padding-top: 15px;\n  padding-bottom: 15px;\n}\n.menu label {\n  font-size: larger;\n}\n.menu li {\n  list-style: none;\n}\n.menu .menutitle {\n  color: #000095;\n  display: inline-block;\n  background: white none repeat scroll 0 0;\n  float: left;\n  margin-top: -30px;\n  margin-left: 10px;\n  padding-left: 5px;\n  padding-right: 5px;\n}\n.studies {\n  list-style: none;\n}\n.studies > div {\n  border: 2px solid #000095;\n  border-radius: 25px;\n  padding: 15px;\n  margin-bottom: 10px;\n}\n.studies > div li {\n  border-bottom: 1px dashed grey;\n  font-size: larger;\n}\n.studies .location {\n  display: inline-block;\n}\n.studies .location:not(:first-child) {\n  margin-left: 5px;\n}\n.search-bar .fa-times {\n  margin-left: -25px;\n  margin-right: 8px;\n}\n.row {\n  margin-left: 15px;\n  margin-right: 15px;\n}\n.row:first-child {\n  margin: 35px 15px 15px 15px;\n}\n", ""]);
+exports.push([module.i, ".menu {\n  border: 2px solid #007bff;\n  border-radius: 25px;\n  padding-top: 15px;\n  padding-bottom: 15px;\n}\n.menu label {\n  font-size: larger;\n}\n.menu li {\n  list-style: none;\n}\n.menu .menutitle {\n  color: #007bff;\n  display: inline-block;\n  background: white none repeat scroll 0 0;\n  float: left;\n  margin-top: -30px;\n  margin-left: 10px;\n  padding-left: 5px;\n  padding-right: 5px;\n}\n.studies {\n  list-style: none;\n}\n.studies > div {\n  border: 2px solid #007bff;\n  border-radius: 25px;\n  padding: 15px;\n  margin-bottom: 10px;\n}\n.studies > div li {\n  border-bottom: 1px dashed grey;\n  font-size: larger;\n}\n.studies .location {\n  display: inline-block;\n}\n.studies .location:not(:first-child) {\n  margin-left: 5px;\n}\n.search-bar .fa-times {\n  margin-left: -25px;\n  margin-right: 8px;\n}\n.row {\n  margin-left: 15px;\n  margin-right: 15px;\n}\n.row:first-child {\n  margin: 35px 15px 15px 15px;\n}\n", ""]);
 
 // exports
 
