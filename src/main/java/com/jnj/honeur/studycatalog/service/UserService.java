@@ -13,4 +13,6 @@ public interface UserService {
     public void createStudy(Study study);
     public List<User> getAllUsersButCurrent(int id);
     public User getUser(int id);
+
+    public List<User> getCollaborators(Study study, int id);
 }

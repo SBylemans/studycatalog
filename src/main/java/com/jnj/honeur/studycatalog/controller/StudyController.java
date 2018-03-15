@@ -40,7 +40,12 @@ public class StudyController {
 
     @GetMapping("/study")
     public List<Study> getStudies(Pac4jPrincipal principal){
-        return studyService.getStudies(getUser(principal));
+        List<Study> studies = studyService.getStudies(getUser(principal));
+        for(Study study: studies) {
+            List<User> cols = userService.getCollaborators(study, Integer.parseInt(principal.getProfile().getAuthenticationAttribute("id", String.class)));
+            study.collaborators = cols;
+        }
+        return studies;
     }
 
     @PostMapping(value = "/study", consumes = "application/json", produces = "application/json")

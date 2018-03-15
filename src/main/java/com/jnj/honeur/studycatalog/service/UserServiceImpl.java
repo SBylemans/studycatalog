@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.jnj.honeur.studycatalog.repository.jpa.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -48,6 +50,26 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUser(int id) {
         return userRepository.findOne(id);
+    }
+
+    @Override
+    public List<User> getCollaborators(Study study, int id) {
+        List<User> users = userRepository.findAll();
+        List<User> toRemove = new ArrayList<>();
+        for(User u : users){
+            Set<UserRole> roles = u.getUserRoles();
+            boolean hasRole = true;
+            for(UserRole r: roles){
+                if(!r.getRole().getName().equals(study.name) || u.getId() == id){
+                    hasRole = false;
+                }
+            }
+            if(!hasRole){
+                toRemove.add(u);
+            }
+        }
+        users.removeAll(toRemove);
+        return users;
     }
 
 
